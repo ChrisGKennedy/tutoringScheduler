@@ -11,7 +11,7 @@ app.use(cors());
 //from the request.body obj
 app.use(express.json()); //req.body
 
-//ROUTES----------
+//ROUTES------------------------------------
 
 //SERVER------------------------------
 app.listen(5000, () => {
