@@ -10,6 +10,7 @@ CREATE TABLE reservation(
     reservation_status INT, --Need to decide what each int means or use different data type
     problem VARCHAR(255), --May want it to be longer
     checkedIn BOOLEAN,
+    meetingDone BOOLEAN,
     timeIn TIMESTAMP
 );
 
