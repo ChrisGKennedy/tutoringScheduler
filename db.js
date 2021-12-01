@@ -5,7 +5,7 @@ const pool = new Pool({
   password: "chester",
   host: "localhost",
   port: 5432,
-  database: "scheduler",
+  database: "simplescheduler", //CHANGE THIS LINE TO GO BETWEEN DB'S "scheduler" vs "simplescheduler"
 });
 
 module.exports = pool;

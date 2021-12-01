@@ -1,7 +1,7 @@
 import React from "react";
 
 function EditEntry() {
-  return <div>edit</div>;
+  return <div>edit entry component</div>;
 }
 
 export default EditEntry;

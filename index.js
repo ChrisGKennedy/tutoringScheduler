@@ -11,7 +11,164 @@ app.use(cors());
 //from the request.body obj
 app.use(express.json()); //req.body
 
-//ROUTES -----------------------------------------------
+//ROUTES FOR SIMPLE DB----------------------------------------------------------------
+
+//RESERVATIONS
+
+//Posting a 1 reservation
+app.post("/simplereservation", async (req, res) => {
+  try {
+    const { problem } = req.body;
+    const { studentName } = req.body;
+    const newReservation = await pool.query(
+      "INSERT INTO reservation (problem, studentName) VALUES($1, $2) RETURNING *",
+      [problem, studentName]
+    );
+
+    res.json(newReservation.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting all reservations
+app.get("/simplereservation", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allReservations = await pool.query("SELECT * FROM reservation");
+
+    res.json(allReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting a specific reservation
+app.get("/simplereservation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = await pool.query(
+      "SELECT * FROM reservation WHERE reservation_id = $1",
+      [id]
+    );
+
+    res.json(todo.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Updating a reservation (MAYBE NEED TO WRITE AN UPDATE FUNTION FOR FINISHING MEETING)
+app.put("/simplereservation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
+    const { studentName } = req.body;
+    const updateTodo = await pool.query(
+      "UPDATE reservation SET problem = $1 AND studentName = $2 WHERE reservation_id = $3",
+      [description, studentName, id]
+    );
+
+    res.json("reservation was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Deleting a specific reservation
+//maybe write a delete all (clear list)?
+app.delete("/simplereservation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteTodo = await pool.query(
+      "DELETE FROM reservation WHERE reservation_id = $1",
+      [id]
+    );
+    res.json("Todo was deleted!");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+//ROOM
+
+//Posting/creating a room
+app.post("/simpleroom", async (req, res) => {
+  try {
+    const { room_name } = req.body;
+    const { room_number } = req.body;
+    const newRoom = await pool.query(
+      "INSERT INTO room (room_name, room_number) VALUES($1, $2) RETURNING *",
+      [room_name, room_number]
+    );
+
+    res.json(newRoom.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting all rooms
+app.get("/simpleroom", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allRooms = await pool.query("SELECT * FROM room");
+
+    res.json(allRooms.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting a specific room
+app.get("/simpleroom/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const room = await pool.query("SELECT * FROM room WHERE room_id = $1", [
+      id,
+    ]);
+
+    res.json(room.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Updating a specific room (DOESNT WORK YET)
+//i"nvalid input syntax for type boolean: "Acm" ""
+app.put("/simpleroom/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { room_name } = req.body;
+    const { room_number } = req.body;
+    const updateRoom = await pool.query(
+      "UPDATE room SET room_name = $1 AND room_number = $2 WHERE room_id = $3",
+      [room_name, room_number, id]
+    );
+
+    res.json("room was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Deleting a room
+app.delete("/simpleroom/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteRoom = await pool.query("DELETE FROM room WHERE room_id = $1", [
+      id,
+    ]);
+    res.json("Todo was deleted!");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+/*
+//ROUTES FOR ORGINAL DB-----------------------------------------------
 
 //creating a reservation
 app.post("/reservation", async (req, res) => {
@@ -40,8 +197,8 @@ app.get("/reservation", async (req, res) => {
     console.error(err.message);
   }
 });
-
-//SERVER------------------------------
+*/
+//SERVER----------------------------------------------------------------
 app.listen(5000, () => {
   console.log("server started and is on port 5000");
 });
