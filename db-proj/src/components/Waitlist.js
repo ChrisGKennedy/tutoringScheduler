@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-
+import EditEntry from "./EditEntry";
 function Waitlist() {
   const [reservation, setReservations] = useState([]);
 
@@ -14,12 +14,25 @@ function Waitlist() {
     }
   };
 
+  const deleteReservation = async (id) => {
+    try {
+      const deleteReservation = await fetch(
+        `http://localhost:5000/simplereservation/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      setReservations(reservation.filter((res) => res.reservation_id !== id));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  console.log(reservation);
   useEffect(() => {
     getReservations();
   }, []);
-
-  console.log(reservation);
-
   return (
     <Fragment>
       <h2 className="text-center mt-5"> Waiting List </h2>{" "}
@@ -42,8 +55,17 @@ function Waitlist() {
             <tr>
               <td>{res.studentname}</td>
               <td>{res.problem}</td>
-              <td>edit</td>
-              <td>delete</td>
+              <td>
+                <EditEntry reservation={res} />
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteReservation(res.reservation_id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
