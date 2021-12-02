@@ -11,7 +11,6 @@ function App() {
     <Fragment>
       <InputEntry />
       <Waitlist />
-      <EditEntry />
       <Room />
       <Scoreboard />
     </Fragment>

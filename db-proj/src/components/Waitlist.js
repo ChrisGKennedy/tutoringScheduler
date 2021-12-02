@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-
+import EditEntry from "./EditEntry";
 function Waitlist() {
   const [reservation, setReservations] = useState([]);
 
@@ -55,7 +55,9 @@ function Waitlist() {
             <tr>
               <td>{res.studentname}</td>
               <td>{res.problem}</td>
-              <td>edit</td>
+              <td>
+                <EditEntry reservation={res} />
+              </td>
               <td>
                 <button
                   className="btn btn-danger"

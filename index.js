@@ -63,11 +63,11 @@ app.get("/simplereservation/:id", async (req, res) => {
 app.put("/simplereservation/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { description } = req.body;
+    const { problem } = req.body;
     const { studentName } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE reservation SET problem = $1 AND studentName = $2 WHERE reservation_id = $3",
-      [description, studentName, id]
+      "UPDATE reservation SET problem = $1, studentName = $2 WHERE reservation_id = $3",
+      [problem, studentName, id]
     );
 
     res.json("reservation was updated!");
