@@ -29,6 +29,23 @@ const Rooms = () => {
     }
   };
 
+  //CREATING A FUNCTION TO RETURN ALL
+  //RESERVATION IDS ASSOCIATED WITH A ROOM ID/NAME
+  const getARoom = async (id) => {
+    try {
+      const deleteRooms = await fetch(
+        `http://localhost:5000/simpleroom/${id}`,
+        {
+          method: "GET",
+        }
+      );
+
+      setRooms(rooms.filter((room) => room.room_id !== id));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   useEffect(() => {
     getRooms();
   }, []);
@@ -52,7 +69,12 @@ const Rooms = () => {
             <td>{room.room_name}</td>
             <td>{room.room_number}</td>
             <td>
-              <button class="btn btn-primary">View</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => deleteRooms(room.room_id)}
+              >
+                DELETE(view)
+              </button>
             </td>
             <td>
               <button
