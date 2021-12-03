@@ -15,7 +15,7 @@ app.use(express.json()); //req.body
 
 //RESERVATIONS
 
-//Posting a 1 reservation
+//Creating a reservation
 app.post("/simplereservation", async (req, res) => {
   try {
     const { problem } = req.body;
@@ -64,10 +64,10 @@ app.put("/simplereservation/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { problem } = req.body;
-    const { studentName } = req.body;
+    const { studentname } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE reservation SET problem = $1, studentName = $2 WHERE reservation_id = $3",
-      [problem, studentName, id]
+      "UPDATE reservation SET studentName = $2, problem = $1 WHERE reservation_id = $3",
+      [problem, studentname, id]
     );
 
     res.json("reservation was updated!");
@@ -91,7 +91,7 @@ app.delete("/simplereservation/:id", async (req, res) => {
   }
 });
 
-//ROOM
+//ROOMS
 
 //Posting/creating a room
 app.post("/simpleroom", async (req, res) => {
@@ -154,6 +154,21 @@ app.put("/simpleroom/:id", async (req, res) => {
   }
 });
 
+//Getting a specific teacher
+app.get("/simpleteacher/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const teacher = await pool.query(
+      "SELECT * FROM teacher WHERE teacher_id = $1",
+      [id]
+    );
+
+    res.json(teacher.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Deleting a room
 app.delete("/simpleroom/:id", async (req, res) => {
   try {
@@ -162,6 +177,52 @@ app.delete("/simpleroom/:id", async (req, res) => {
       id,
     ]);
     res.json("Todo was deleted!");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+//TEACHER ROUTES
+
+//Creating a teacher
+//needs room_id? idk how to do
+app.post("/simpleteacher", async (req, res) => {
+  try {
+    const { fullname } = req.body;
+    const { email } = req.body;
+    const newRoom = await pool.query(
+      "INSERT INTO teacher (fullname, email) VALUES($1, $2) RETURNING *",
+      [fullname, email]
+    );
+
+    res.json(newRoom.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting all teachers
+app.get("/simpleteacher", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allTeachers = await pool.query("SELECT * FROM teacher");
+
+    res.json(allTeachers.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Deleting a teacher
+app.delete("/simpleteacher/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteRoom = await pool.query(
+      "DELETE FROM teacher WHERE teacher_id = $1",
+      [id]
+    );
+    res.json("teacher was deleted!");
   } catch (err) {
     console.log(err.message);
   }

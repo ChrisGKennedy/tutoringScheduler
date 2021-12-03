@@ -2,14 +2,24 @@ import React, { Fragment, useState } from "react";
 
 function EditEntry({ reservation }) {
   const [problem, setProblem] = useState(reservation.problem);
-  const [studentName, setName] = useState(reservation.studentName);
-  console.log(reservation);
+  const [studentname, setName] = useState(reservation.studentname);
+  // console.log(reservation);
+  console.log("TESTING BELOW");
+  console.log(studentname);
+
+  const bothFunctions = (sn, p) => {
+    setName(sn);
+    setProblem(p);
+  };
 
   //Update reservation function
   const updateReservation = async (e) => {
     e.preventDefault();
     try {
-      const body = { problem, studentName };
+      const body = { studentname, problem };
+      const sn = studentname;
+      const p = problem;
+
       const response = await fetch(
         `http://localhost:5000/simplereservation/${reservation.reservation_id}`,
         {
@@ -20,7 +30,6 @@ function EditEntry({ reservation }) {
       );
 
       window.location = "/";
-      console.log(response);
     } catch (err) {
       console.error(err.message);
     }
@@ -41,8 +50,7 @@ function EditEntry({ reservation }) {
         class="modal"
         id={`id${reservation.reservation_id}`}
         onClick={() => {
-          setProblem(reservation.problem);
-          setName(reservation.studentName);
+          bothFunctions(reservation.studentname, reservation.problem);
         }}
       >
         <div class="modal-dialog">
@@ -54,8 +62,7 @@ function EditEntry({ reservation }) {
                 class="close"
                 data-dismiss="modal"
                 onClick={() => {
-                  setProblem(reservation.problem);
-                  setName(reservation.studentName);
+                  bothFunctions(reservation.studentname, reservation.problem);
                 }}
               >
                 &times;
@@ -66,14 +73,14 @@ function EditEntry({ reservation }) {
               <input
                 type="text"
                 className="form-control"
-                value={problem}
-                onChange={(e) => setProblem(e.target.value)}
+                value={studentname}
+                onChange={(e) => setName(e.target.value)}
               />
               <input
                 type="text"
                 className="form-control"
-                value={studentName}
-                onChange={(e) => setName(e.target.value)}
+                value={problem}
+                onChange={(e) => setProblem(e.target.value)}
               />
             </div>
 
@@ -91,8 +98,7 @@ function EditEntry({ reservation }) {
                 class="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => {
-                  setProblem(reservation.problem);
-                  setName(reservation.studentName);
+                  bothFunctions(reservation.studentname, reservation.problem);
                 }}
               >
                 Close
