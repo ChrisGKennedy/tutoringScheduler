@@ -16,7 +16,7 @@ app.use(express.json()); //req.body
 //RESERVATIONS
 
 //Creating a reservation with a room_id by giving a room name
-app.post("/simplereservation", async (req, res) => {
+app.post("/simplereservationadvanced", async (req, res) => {
   try {
     const { room_name } = req.body;
     const { problem } = req.body;
