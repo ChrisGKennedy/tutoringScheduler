@@ -29,7 +29,7 @@ function Waitlist() {
     }
   };
 
-  console.log(reservation);
+  // console.log(reservation);
   useEffect(() => {
     getReservations();
   }, []);
@@ -41,6 +41,7 @@ function Waitlist() {
           <tr>
             <th>Name</th>
             <th>Problem</th>
+            <th>room id (testing)</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -52,9 +53,10 @@ function Waitlist() {
         <td>john@example.com</td>
       </tr> */}
           {reservation.map((res) => (
-            <tr>
+            <tr key={res.reservation_id}>
               <td>{res.studentname}</td>
               <td>{res.problem}</td>
+              <td>{res.room_id}</td>
               <td>
                 <EditEntry reservation={res} />
               </td>
