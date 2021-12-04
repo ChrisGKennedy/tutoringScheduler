@@ -3,16 +3,22 @@ import React, { Fragment, useState } from "react";
 const InputEntry = () => {
   const [problem, setProblem] = useState("");
   const [studentName, setName] = useState("");
+  const [room_name, setRoom] = useState("");
+  var out;
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { problem, studentName };
-      const response = await fetch("http://localhost:5000/simplereservation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const body = { room_name, problem, studentName };
+      const response = await fetch(
+        "http://localhost:5000/simplereservationadvanced",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      out = body;
 
       window.location = "/";
     } catch (err) {
@@ -20,6 +26,8 @@ const InputEntry = () => {
     }
   };
 
+  console.log("TESTING");
+  console.log(out);
   return (
     <Fragment>
       {""}
@@ -45,6 +53,13 @@ const InputEntry = () => {
             value={problem}
             onChange={(e) => setProblem(e.target.value)}
             placeholder="problem"
+          />
+          <input
+            type="text"
+            className="form-control"
+            value={room_name}
+            onChange={(e) => setRoom(e.target.value)}
+            placeholder="room name"
           />
           <button className="btn btn-success"> Add </button>
         </div>

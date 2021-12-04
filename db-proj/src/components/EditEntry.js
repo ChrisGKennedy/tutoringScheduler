@@ -4,8 +4,8 @@ function EditEntry({ reservation }) {
   const [problem, setProblem] = useState(reservation.problem);
   const [studentname, setName] = useState(reservation.studentname);
   // console.log(reservation);
-  console.log("TESTING BELOW");
-  console.log(studentname);
+  // console.log("TESTING BELOW");
+  // console.log(studentname);
 
   const bothFunctions = (sn, p) => {
     setName(sn);

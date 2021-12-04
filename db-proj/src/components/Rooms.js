@@ -31,7 +31,7 @@ const Rooms = () => {
 
   //CREATING A FUNCTION TO RETURN ALL
   //RESERVATION IDS ASSOCIATED WITH A ROOM ID/NAME
-  const getARoom = async (id) => {
+  const viewARoom = async (id) => {
     try {
       const deleteRooms = await fetch(
         `http://localhost:5000/simpleroom/${id}`,
@@ -71,9 +71,9 @@ const Rooms = () => {
             <td>
               <button
                 className="btn btn-primary"
-                onClick={() => deleteRooms(room.room_id)}
+                onClick={() => viewARoom(room.room_id)}
               >
-                DELETE(view)
+                view
               </button>
             </td>
             <td>
