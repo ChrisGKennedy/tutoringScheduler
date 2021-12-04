@@ -17,7 +17,7 @@ function App() {
       <Waitlist />
       <InputRoom />
       <Room />
-      <RoomWaitlist />
+
       <InputTeacher />
       <TeacherList />
       <Scoreboard />

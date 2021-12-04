@@ -1,7 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
+import RoomWaitList from "./RoomWaitlist";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
+  const [reservations, setReservations] = useState([]);
+  const [newRooms, setNewRooms] = useState([]);
 
   const getRooms = async () => {
     try {
@@ -9,6 +12,38 @@ const Rooms = () => {
       const jsonData = await response.json();
 
       setRooms(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getReservations = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/simplereservation");
+      const jsonData = await response.json();
+
+      setReservations(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  //CREATING A FUNCTION TO RETURN ALL
+  //RESERVATION IDS ASSOCIATED WITH A ROOM ID/NAME
+  var roomReservations;
+
+  const viewARoomList = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/simplereservationsearch/${id}`,
+        {
+          method: "GET",
+        }
+      );
+
+      // roomReservations = getRooms;
+      const jsonData = await response.json();
+      setNewRooms(jsonData);
     } catch (err) {
       console.error(err.message);
     }
@@ -29,25 +64,10 @@ const Rooms = () => {
     }
   };
 
-  //CREATING A FUNCTION TO RETURN ALL
-  //RESERVATION IDS ASSOCIATED WITH A ROOM ID/NAME
-  const viewARoom = async (id) => {
-    try {
-      const deleteRooms = await fetch(
-        `http://localhost:5000/simpleroom/${id}`,
-        {
-          method: "GET",
-        }
-      );
-
-      setRooms(rooms.filter((room) => room.room_id !== id));
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
   useEffect(() => {
     getRooms();
+    viewARoomList();
+    getReservations();
   }, []);
 
   return (
@@ -67,11 +87,13 @@ const Rooms = () => {
           <tr key={room.room_id}>
             <td>{room.room_id}</td>
             <td>{room.room_name}</td>
-            <td>{room.room_number}</td>
+            <td>
+              <RoomWaitList reservations={roomReservations} />
+            </td>
             <td>
               <button
                 className="btn btn-primary"
-                onClick={() => viewARoom(room.room_id)}
+                onClick={() => viewARoomList(room.room_id)}
               >
                 view
               </button>
