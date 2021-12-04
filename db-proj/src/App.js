@@ -7,7 +7,8 @@ import Scoreboard from "./components/ScoreBoard";
 import InputRoom from "./components/InputRoom";
 import InputTeacher from "./components/InputTeacher";
 import TeacherList from "./components/TeacherList";
-import RoomWaitlist from "./components/RoomWaitlist";
+
+import SearchReservationWithRoomInput from "./components/SearchReservationWithRoomInput";
 import React, { Fragment } from "react";
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
       <Waitlist />
       <InputRoom />
       <Room />
-      <RoomWaitlist />
+      <SearchReservationWithRoomInput />
+
       <InputTeacher />
       <TeacherList />
       <Scoreboard />
