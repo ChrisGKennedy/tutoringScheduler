@@ -15,7 +15,36 @@ app.use(express.json()); //req.body
 
 //RESERVATIONS
 
-//Creating a reservation
+//Creating a reservation with a room_id by giving a room name
+app.post("/simplereservationadvanced", async (req, res) => {
+  try {
+    const { room_name } = req.body;
+    const { problem } = req.body;
+    const { studentName } = req.body;
+    const newReservation = await pool.query(
+      "INSERT INTO reservation (room_id, problem, studentName) VALUES((SELECT room_id FROM room WHERE room_name = $1), $2, $3) RETURNING *",
+      [room_name, problem, studentName]
+    );
+
+    res.json(newReservation.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/simplereservationadvanced", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allReservations = await pool.query("SELECT * FROM reservation");
+
+    res.json(allReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Creating a reservation without a room_id
 app.post("/simplereservation", async (req, res) => {
   try {
     const { problem } = req.body;
