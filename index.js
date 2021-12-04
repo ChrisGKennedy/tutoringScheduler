@@ -44,6 +44,22 @@ app.get("/simplereservationadvanced", async (req, res) => {
   }
 });
 
+app.get("/simplereservationsearch/:id", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { id } = req.params;
+    const someReservations = await pool.query(
+      "SELECT * FROM reservation WHERE room_id = $1",
+      [id]
+    );
+
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Creating a reservation without a room_id
 app.post("/simplereservation", async (req, res) => {
   try {
