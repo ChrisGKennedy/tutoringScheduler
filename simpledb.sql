@@ -18,7 +18,6 @@ CREATE TABLE reservation(
 
 CREATE TABLE room(
     room_id SERIAL PRIMARY KEY,
-    reservation_id int,
     room_name VARCHAR (255) DEFAULT 'Office Hours',
     room_number INT DEFAULT 0
     --should probably add room building

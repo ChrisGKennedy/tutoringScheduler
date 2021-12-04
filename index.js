@@ -201,6 +201,23 @@ app.delete("/simpleroom/:id", async (req, res) => {
 
 //TEACHER ROUTES
 
+//creates a teacher with a room_id by providing a room name
+app.post("/simpleteacherdadvanced", async (req, res) => {
+  try {
+    const { room_name } = req.body;
+    const { fullname } = req.body;
+    const { email } = req.body;
+    const newRoom = await pool.query(
+      "INSERT INTO reservation (room_name, fullname, email) VALUES((SELECT room_id FROM room WHERE room_name = $1), $2, $3) RETURNING *",
+      [room_name, fullname, email]
+    );
+
+    res.json(newRoom.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Creating a teacher
 //needs room_id? idk how to do
 app.post("/simpleteacher", async (req, res) => {
