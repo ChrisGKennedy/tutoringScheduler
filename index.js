@@ -44,7 +44,41 @@ app.get("/simplereservationadvanced", async (req, res) => {
   }
 });
 
+//Searches reservation by id
 app.get("/simplereservationsearch/:id", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { id } = req.params;
+    const someReservations = await pool.query(
+      "SELECT * FROM reservation WHERE room_id = $1",
+      [id]
+    );
+
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Searches reservation by name
+app.get("/simplereservationsearchbyname/:room_name", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { room_name } = req.params;
+    const someReservations = await pool.query(
+      "SELECT * FROM reservation WHERE room_id = (SELECT room_id FROM room WHERE room_name = $1)",
+      [room_name]
+    );
+
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.put("/simplereservationsearch/:id", async (req, res) => {
   //await = wait for a function to execute
   try {
     //console.log(req.body);
