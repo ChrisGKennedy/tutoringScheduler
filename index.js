@@ -283,13 +283,18 @@ app.post("/simpleteacherdadvanced", async (req, res) => {
 
 //Creating a teacher
 //needs room_id? idk how to do
+const text =
+  "INSERT INTO teacher (fullname, email, room_id) VALUES($1, $2, (SELECT room_name FROM room WHERE room_id = $3)) RETURNING *";
+const working =
+  "INSERT INTO teacher (fullname, email, room_id) VALUES($1, $2, $3) RETURNING *";
 app.post("/simpleteacher", async (req, res) => {
   try {
     const { fullname } = req.body;
     const { email } = req.body;
+    const { room_name } = req.body;
     const newRoom = await pool.query(
-      "INSERT INTO teacher (fullname, email) VALUES($1, $2) RETURNING *",
-      [fullname, email]
+      "INSERT INTO teacher (fullname, email, room_id) VALUES($1, $2, (SELECT room_id FROM room WHERE room_name = $3)) RETURNING *",
+      [fullname, email, room_name]
     );
 
     res.json(newRoom.rows[0]);

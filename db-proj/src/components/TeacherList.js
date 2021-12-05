@@ -55,7 +55,7 @@ function TeacherList() {
             <tr key={teacher.teacher_id}>
               <td>{teacher.fullname}</td>
               <td>{teacher.email}</td>
-              <td>257 (static) </td>
+              <td>{teacher.room_id} </td>
               <td>
                 <button
                   className="btn btn-danger"
