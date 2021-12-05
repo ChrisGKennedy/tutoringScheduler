@@ -170,6 +170,19 @@ app.delete("/simplereservation/:id", async (req, res) => {
   }
 });
 
+//Delete all reservations
+app.delete("/simplereservation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteAllTodos = await pool.query(
+      "DELETE FROM reservation"
+    );
+    res.json("All Todos deleted!");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 //ROOMS
 
 //Posting/creating a room
