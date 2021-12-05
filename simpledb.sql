@@ -30,3 +30,21 @@ CREATE TABLE teacher(
     fullname VARCHAR(255) DEFAULT 'Trinity Instructor',
     email VARCHAR(255) DEFAULT 'instructor@trinity.edu'
 );
+
+CREATE TABLE scoreboard(
+    scoreboard_id SERIAL PRIMARY KEY,
+    teacher_id int,
+    fullname VARCHAR(255),
+    num_problems_done int,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+);
+
+--Advanced Function: 
+-- SELECT   reservation.startTime,
+--          reservation.endTime,
+--          reservation.MinTime - reservation.startTime AS totalTime,
+--          (LOG(totalTime, 2 - (reservation.Difficulty - 1)/5)
+--              + (totalTime)/5 - SQUARE(totalTime)/500) * 10 AS problemScore,
+
+-- SELECT * FROM reservation
+--
