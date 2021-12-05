@@ -10,7 +10,7 @@ CREATE TABLE reservation(
     room_id int, 
     FOREIGN KEY (room_id) REFERENCES room(room_id),
     reservation_status INT DEFAULT 0, --Need to decide what each int means or use different data type
-    --0: in waitlist, 1: in progress, 2: done
+    --1: in waitlist, 2: in progress, 3: done
     problem VARCHAR(255) DEFAULT 'general problem', --May want it to be longer
     studentName VARCHAR(255) DEFAULT 'Trinity Student',
     meetingDone BOOLEAN DEFAULT False
@@ -30,3 +30,12 @@ CREATE TABLE teacher(
     fullname VARCHAR(255) DEFAULT 'Trinity Instructor',
     email VARCHAR(255) DEFAULT 'instructor@trinity.edu'
 );
+
+CREATE TABLE scoreboard(
+    scoreboard_id SERIAL PRIMARY KEY,
+    teacher_id int,
+    num_problems_done int,
+    score float,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
+);
+-- display id, number problems, name, score
