@@ -39,3 +39,15 @@ CREATE TABLE scoreboard(
     FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );
 -- display id, number problems, name, score
+
+
+--Advanced Function: 
+-- SELECT   reservation.startTime,
+--          reservation.endTime,
+--          reservation.MinTime - reservation.startTime AS totalTime,
+--          (LOG(totalTime, 2 - (reservation.Difficulty - 1)/5)
+--              + (totalTime)/5 - SQUARE(totalTime)/500) * 10 AS problemScore,
+
+-- SELECT * FROM reservation
+--
+
