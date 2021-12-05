@@ -3,11 +3,12 @@ import React, { Fragment, useState } from "react";
 function InputTeacher() {
   const [email, setEmail] = useState("");
   const [fullname, setName] = useState("");
+  const [room_name, setID] = useState("");
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { fullname, email };
+      const body = { fullname, email, room_name };
       const response = await fetch("http://localhost:5000/simpleteacher", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,6 +46,13 @@ function InputTeacher() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email"
+          />
+          <input
+            type="text"
+            className="form-control"
+            value={room_name}
+            onChange={(e) => setID(e.target.value)}
+            placeholder="room name"
           />
           <button className="btn btn-success"> Add </button>
         </div>
