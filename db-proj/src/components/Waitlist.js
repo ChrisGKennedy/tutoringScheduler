@@ -42,6 +42,7 @@ function Waitlist() {
             <th>Name</th>
             <th>Problem</th>
             <th>room id (testing)</th>
+            <th>status</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -57,6 +58,7 @@ function Waitlist() {
               <td>{res.studentname}</td>
               <td>{res.problem}</td>
               <td>{res.room_id}</td>
+              <td>{res.reservation_status}</td>
               <td>
                 <EditEntry reservation={res} />
               </td>

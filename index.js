@@ -144,9 +144,10 @@ app.put("/simplereservation/:id", async (req, res) => {
     const { id } = req.params;
     const { problem } = req.body;
     const { studentname } = req.body;
+    const { reservation_status } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE reservation SET studentName = $2, problem = $1 WHERE reservation_id = $3",
-      [problem, studentname, id]
+      "UPDATE reservation SET studentName = $2, problem = $1, reservation_status = $4 WHERE reservation_id = $3",
+      [problem, studentname, id, reservation_status]
     );
 
     res.json("reservation was updated!");
@@ -334,6 +335,24 @@ app.delete("/simpleteacher/:id", async (req, res) => {
     res.json("teacher was deleted!");
   } catch (err) {
     console.log(err.message);
+  }
+});
+
+//COMPLEX FUNCTION ROUTES
+//Inserting into scoreboard
+// INSERT INTO scoreboard (teacher_id, num_problems_done, score) VALUES((SELECT teacher_id FROM teacher WHERE fullname = 'zhang'), 2, 3);
+const scoreboardQuery =
+  "SELECT scoreboard.teacher_id, scoreboard.num_problems, scoreboard.score, teacher.fullname FROM scoreboard INNER JOIN teacher ON scoreboard.teacher_id=teacher.teacher_id;";
+
+//Getting all teachers for scoreboard
+app.get("/simpleteacher", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    const allTeachersWithScore = await pool.query("SELECT scoreboard.teacher");
+
+    res.json(allTeachersWithScore.rows);
+  } catch (err) {
+    console.error(err.message);
   }
 });
 
