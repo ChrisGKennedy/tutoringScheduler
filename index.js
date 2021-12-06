@@ -176,9 +176,10 @@ app.put("/simplereservation/:id", async (req, res) => {
     const { id } = req.params;
     const { problem } = req.body;
     const { studentname } = req.body;
+    const { reservation_status } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE reservation SET studentName = $2, problem = $1 WHERE reservation_id = $3",
-      [problem, studentname, id]
+      "UPDATE reservation SET studentName = $2, problem = $1, reservation_status = $4 WHERE reservation_id = $3",
+      [problem, studentname, id, reservation_status]
     );
 
     res.json("reservation was updated!");
@@ -197,6 +198,19 @@ app.delete("/simplereservation/:id", async (req, res) => {
       [id]
     );
     res.json("Todo was deleted!");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+//Delete all reservations
+app.delete("/simplereservation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteAllTodos = await pool.query(
+      "DELETE FROM reservation"
+    );
+    res.json("All Todos deleted!");
   } catch (err) {
     console.log(err.message);
   }
@@ -314,13 +328,18 @@ app.post("/simpleteacherdadvanced", async (req, res) => {
 
 //Creating a teacher
 //needs room_id? idk how to do
+const text =
+  "INSERT INTO teacher (fullname, email, room_id) VALUES($1, $2, (SELECT room_name FROM room WHERE room_id = $3)) RETURNING *";
+const working =
+  "INSERT INTO teacher (fullname, email, room_id) VALUES($1, $2, $3) RETURNING *";
 app.post("/simpleteacher", async (req, res) => {
   try {
     const { fullname } = req.body;
     const { email } = req.body;
+    const { room_name } = req.body;
     const newRoom = await pool.query(
-      "INSERT INTO teacher (fullname, email) VALUES($1, $2) RETURNING *",
-      [fullname, email]
+      "INSERT INTO teacher (fullname, email, room_id) VALUES($1, $2, (SELECT room_id FROM room WHERE room_name = $3)) RETURNING *",
+      [fullname, email, room_name]
     );
 
     res.json(newRoom.rows[0]);
@@ -353,6 +372,24 @@ app.delete("/simpleteacher/:id", async (req, res) => {
     res.json("teacher was deleted!");
   } catch (err) {
     console.log(err.message);
+  }
+});
+
+//COMPLEX FUNCTION ROUTES
+//Inserting into scoreboard
+// INSERT INTO scoreboard (teacher_id, num_problems_done, score) VALUES((SELECT teacher_id FROM teacher WHERE fullname = 'zhang'), 2, 3);
+const scoreboardQuery =
+  "SELECT scoreboard.teacher_id, scoreboard.num_problems, scoreboard.score, teacher.fullname FROM scoreboard INNER JOIN teacher ON scoreboard.teacher_id=teacher.teacher_id;";
+
+//Getting all teachers for scoreboard
+app.get("/simpleteacher", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    const allTeachersWithScore = await pool.query("SELECT scoreboard.teacher");
+
+    res.json(allTeachersWithScore.rows);
+  } catch (err) {
+    console.error(err.message);
   }
 });
 
