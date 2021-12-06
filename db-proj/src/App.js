@@ -11,11 +11,13 @@ import UpdateScoreBoard from "./components/UpdateScoreBoard";
 
 import SearchReservationWithRoomInput from "./components/SearchReservationWithRoomInput";
 import React, { Fragment } from "react";
+import EstimatedWait from "./components/EstimatedWait";
 
 function App() {
   return (
     <Fragment>
       <InputEntry />
+      <EstimatedWait />
       <Waitlist />
       <InputRoom />
       <Room />
