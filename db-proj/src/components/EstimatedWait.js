@@ -37,7 +37,10 @@ function EstimatedWait() {
             onChange={(e) => setRoomName(e.target.value)}
             placeholder="room name"
           />
-          <button className="btn btn-success"> Calculate </button>
+          <button className="btn btn-success"
+          onClick={() => calculateWaitTime()}>
+            Calculate 
+          </button>
         </div>
       </form>
     </Fragment>
