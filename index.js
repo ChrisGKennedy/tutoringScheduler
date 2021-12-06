@@ -30,6 +30,23 @@ app.get("/simplescores", async (req, res) => {
 
 //RESERVATIONS
 
+//Gets all reservations with a given room name
+app.get("/simplereservationsearch/:room_name", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { room_name } = req.params;
+    const someReservations = await pool.query(
+      "SELECT * FROM reservation WHERE room_id = (SELECT * FROM room WHERE room_name = $1)",
+      [room_name]
+    );
+
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Creating a reservation with a room_id by giving a room name
 app.post("/simplereservationadvanced", async (req, res) => {
   try {
