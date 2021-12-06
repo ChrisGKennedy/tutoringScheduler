@@ -13,6 +13,21 @@ app.use(express.json()); //req.body
 
 //ROUTES FOR SIMPLE DB----------------------------------------------------------------
 
+//SCOREBOARD
+
+//Getting all scores
+app.get("/simplescores", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allScores = await pool.query("SELECT * FROM scoreboard");
+
+    res.json(allScores.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //RESERVATIONS
 
 //Creating a reservation with a room_id by giving a room name

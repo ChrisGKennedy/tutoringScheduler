@@ -34,9 +34,9 @@ CREATE TABLE teacher(
 CREATE TABLE scoreboard(
     scoreboard_id SERIAL PRIMARY KEY,
     teacher_id int,
-    fullname VARCHAR(255),
     num_problems_done int,
-    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+    score float,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
 );
 
 --Advanced Function: 
