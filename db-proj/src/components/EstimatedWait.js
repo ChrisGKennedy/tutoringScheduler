@@ -3,10 +3,11 @@ import React, {Fragment, useState} from "react";
 function EstimatedWait() {
   const [reservations, setReservations2] = useState([]);
   const [roomName, setRoomName] = useState("");
+  const [waitTime, setWaitTime] = useState("");
 
-  const getReservationsInFront = async (roomName) => {
+  const getReservationsInFront = async () => {
     try {
-      const response = await fetch(`http://localhost:5000//simplereservationsearch/${roomName}`);
+      const response = await fetch(`http://localhost:5000/simplereservationsearchname/${roomName}`);
       const jsonData = await response.json();
 
       setReservations2(jsonData);
@@ -15,9 +16,19 @@ function EstimatedWait() {
     }
   };
 
+  const messageToMinutes = (msg) => {
+    return (((msg.length) / 50) + 5).toFixed();
+  }
+
   const calculateWaitTime = async () => {
-    console.log("WORKING");
-    console.log(reservations);
+    //doesn't work on first click. Is most likely not waiting for result before reservation to compute before calculating wait time
+    getReservationsInFront();
+    var time = 0;
+    for (let i = 0; i < reservations.length; i++){
+      time += messageToMinutes((reservations[i].problem).toString()) * reservations[i].score
+    }
+
+    setWaitTime("Estimated Wait Time: " + time.toString() + " minutes");
 
   }
 
@@ -37,12 +48,13 @@ function EstimatedWait() {
             onChange={(e) => setRoomName(e.target.value)}
             placeholder="room name"
           />
-          <button className="btn btn-success"
+          <button type="button" className="btn btn-success"
           onClick={() => calculateWaitTime()}>
             Calculate 
           </button>
         </div>
       </form>
+      <h5>{waitTime}</h5>
     </Fragment>
   );
 }

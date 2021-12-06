@@ -25,17 +25,15 @@ const Scoreboard = () => {
       <table class="table mt-5 text-center">
         <thead>
           <tr>
-            <th>Scoreboard ID</th>
-            <th>Teacher ID</th>
+            <th>Teacher Name</th>
             <th>number of problems done</th>
             <th>score</th>
           </tr>
         </thead>
         <tbody>
         {scores.map((res) => (
-            <tr>
-              <td>{res.scoreboard_id}</td>
-              <td>{res.teacher_id}</td>
+            <tr key = {res.scoreboard_id}>
+              <td>{res.fullname}</td>
               <td>{res.num_problems_done}</td>
               <td>{res.score}</td>
             </tr>
