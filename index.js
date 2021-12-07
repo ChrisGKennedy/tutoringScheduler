@@ -15,12 +15,59 @@ app.use(express.json()); //req.body
 
 //SCOREBOARD
 
-//Getting all scores
+//Updating a score
+app.post("/simplecreatescore", async (req, res) => {
+  try {
+    const { teacher_id } = req.body;
+    const { num_problems_done } = req.body;
+    const { score } = req.body;
+    const createTodo = await pool.query(
+      "INSERT INTO scoreboard (teacher_id, num_problems_done, score) VALUES ($1, $2, $3)",
+      [teacher_id, num_problems_done, score]
+    );
+    console.log("help");
+    res.json("reservation was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Updating a score
+app.put("/simpleupdatescore", async (req, res) => {
+  try {
+    const { teacher_id } = req.body;
+    const { num_problems_done } = req.body;
+    const { score } = req.body;
+    const updateTodo = await pool.query(
+      "UPDATE scoreboard SET num_problems_done = $2, score = $3 WHERE teacher_id = $1",
+      [teacher_id, num_problems_done, score]
+    );
+
+    res.json("reservation was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting all scores joined with teachers on teacher_id
 app.get("/simplescores", async (req, res) => {
   //await = wait for a function to execute
   try {
     //console.log(req.body);
-    const allScores = await pool.query("SELECT * FROM scoreboard s INNER JOIN teacher t on s.teacher_id = t.teacher_id");
+    const allScores = await pool.query("SELECT * FROM scoreboard s INNER JOIN teacher t ON t.teacher_id = s.teacher_id");
+
+    res.json(allScores.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Getting all scores joined with teachers on teacher_id
+app.get("/simplescoresandteachers", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allScores = await pool.query("SELECT * FROM scoreboard s INNER JOIN teacher t on s.teacher_id = t.teacher_id ORDER BY s.score ASC");
 
     res.json(allScores.rows);
   } catch (err) {
@@ -35,6 +82,36 @@ app.get("/simplescores", async (req, res) => {
 
 //WARNING: DELETES ALL IN RESERVATION
 
+//Creating a reservation without a room_id
+app.delete("/simpledeleteall", async (req, res) => {
+  try {
+    const newReservation = await pool.query(
+      "DELETE FROM reservation WHERE reservation_status >= 2");
+
+    res.json("deleted all reservations");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//search for teacherID by room id
+app.get("/teacheridsearchroom_id/:room_id", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { room_id } = req.params;
+    const someReservations = await pool.query(
+      "SELECT teacher_id FROM teacher where room_id = $1",
+      [room_id]
+    );
+    
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+
 //Gets all reservations with a given room name and their score (for use in estimated wait)
 app.get("/simplereservationsearchname/:room_name", async (req, res) => {
   //await = wait for a function to execute
@@ -42,10 +119,10 @@ app.get("/simplereservationsearchname/:room_name", async (req, res) => {
     //console.log(req.body);
     const { room_name } = req.params;
     const someReservations = await pool.query(
-      "SELECT * FROM reservation r INNER JOIN teacher t ON t.room_id = r.room_id INNER JOIN scoreboard s ON s.teacher_id = t.teacher_id WHERE r.room_id = (SELECT room_id FROM room WHERE room_name = $1) AND r.reservation_status",
+      "SELECT * FROM reservation r INNER JOIN teacher t ON t.room_id = r.room_id INNER JOIN scoreboard s ON s.teacher_id = t.teacher_id WHERE r.room_id = (SELECT room_id FROM room WHERE room_name = $1) AND r.reservation_status < 2",
       [room_name]
     );
-
+    
     res.json(someReservations.rows);
   } catch (err) {
     console.error(err.message);
