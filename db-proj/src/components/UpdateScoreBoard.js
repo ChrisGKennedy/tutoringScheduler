@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 
 function UpdateScoreBoard() {
   const [reservations, setReservations1] = useState([]);
+  const [scores, setScores] = useState([]);
 
   const getReservations = async () => {
     try {
@@ -14,8 +15,20 @@ function UpdateScoreBoard() {
     }
   };
 
+  const getScores = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/simplescores");
+      const jsonData = await response.json();
+
+      setScores(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   useEffect(() => {
     getReservations();
+    getScores();
   }, []);
 
   const makeScoreboard = (data) => {
@@ -65,10 +78,97 @@ function UpdateScoreBoard() {
   };
   //console.log will print whatever in
 
-  const calculateNewScores = () => {
-    console.log("WORKING");
+ //Update score function
+  const updateScore = async (teacher_id, num_problems_done, score) => {
+    try {
+      const body = { teacher_id, num_problems_done, score};
+
+      const response = await fetch(
+        "http://localhost:5000/simpleupdatescore",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+
+      //window.location = "/";
+    } catch (err) {
+      console.error(err.message);
+    }
+  }; 
+  
+  //Update score function
+  const createScore = async (teacher_id, num_problems_done, score) => {
+    try {
+      const body = { teacher_id, num_problems_done, score};
+
+      const response = await fetch(
+        "http://localhost:5000/simplecreatescore",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+
+      //window.location = "/";
+    } catch (err) {
+      console.error(err.message);
+    }
+  }; 
+
+  const calculateNewScores = async () => {
     console.log(reservations);
-    console.log(makeScoreboard(reservations));
+    var results = makeScoreboard(reservations)
+    console.log(scores)
+    for (let x = 0; x < results.length; x++) {
+      var id = -1;
+      var scoreInd = -1;
+      for (let y = 0; y < scores.length; y++){
+        if (results[x].room_id == scores[y].room_id){
+          id = scores[y].teacher_id;
+          scoreInd = y;
+        }
+      }
+      console.log(id);
+      if (id >= 0){
+        var sumProblemsDone = results[x].num_problems_done + scores[scoreInd].num_problems_done;
+        var sumScore = results[x].totalScore + scores[scoreInd].score;
+        updateScore(id, sumProblemsDone, sumScore);
+        console.log("working try");
+      } else {
+        try{
+          const response = await fetch(
+            `http://localhost:5000/teacheridsearchroom_id/${results[x].room_id}`
+          );
+          var teacherID = await response.json();
+          console.log(teacherID);
+  
+          var sumProblemsDone = results[x].num_problems_done;
+          var sumScore = results[x].totalScore;
+          createScore(teacherID[0].teacher_id, sumProblemsDone, sumScore);
+          console.log(teacherID[0].teacher_id);
+          console.log("working catch");
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+
+
+    //DELETE ALL RESERVATIONS AFTER CALCULATIONS
+    try {
+      const response = await fetch(
+        "http://localhost:5000/simpledeleteall",
+        {
+          method: "DELETE",
+        }
+      );
+    } catch (err){
+      console.log(err);
+    }
+    window.location = "/";
   }
 
   return (

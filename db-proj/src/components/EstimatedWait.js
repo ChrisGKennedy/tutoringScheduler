@@ -1,45 +1,61 @@
 import React, { Fragment, useState } from "react";
 
 function EstimatedWait() {
-  const [reservations, setReservations2] = useState([]);
+  //const [reservations, setReservations2] = useState([]);
   const [roomName, setRoomName] = useState("");
   const [waitTime, setWaitTime] = useState("");
 
-  async function getReservationsInFront() {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/simplereservationsearchname/${roomName}`
-      );
-      const jsonData = await response.json();
 
-      setReservations2(jsonData);
-      console.log(reservations);
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
+  // const getReservationsInFront = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:5000/simplereservationsearchname/${roomName}`
+  //     );
+  //     const jsonData = await response.json();
+
+  //     console.log(jsonData);
+      
+  //     setReservations2(jsonData);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
+
 
   const messageToMinutes = (msg) => {
     return (msg.length / 50 + 5).toFixed();
   };
 
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   const calculateWaitTime = async () => {
-    //doesn't work on first click. Is most likely not waiting
-    //for result before reservation to compute before calculating wait time
+    //doesn't work on first click. Is most likely not waiting for result before reservation
+    //to compute before calculating wait time
+    //getReservationsInFront();
+    var reservations;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/simplereservationsearchname/${roomName}`
+      );
+      reservations = await response.json();
+
+      //console.log(jsonData);
+      
+      //setReservations2(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+
 
     var time = 0;
     for (let i = 0; i < reservations.length; i++){
-      console.log(reservations[i].score/reservations.num_problems_done);
-      time += messageToMinutes((reservations[i].problem).toString()) * (reservations[i].score/reservations[i].num_problems_done)
-
+      time += messageToMinutes((reservations[i].problem).toString()) * (reservations[i].score/reservations[i].num_problems_done);
     }
-    time = (time + .5 ).toFixed();
+    console.log(reservations);
+    time = (time + .4999 ).toFixed();
 
     setWaitTime("Estimated Wait Time: " + time.toString() + " minutes");
+    console.log(reservations);
+
   };
 
   return (
