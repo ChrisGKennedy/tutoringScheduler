@@ -1,9 +1,27 @@
 .App {
   text-align: center;
-  background-color: #461111;
+  position: "relative";
+  overflow: "hidden";
+  z-index: -100;
 }
 .container {
   background-color: #f6f2d4;
+
+  height: 100%;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid red;
+}
+.componets {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: 10px;
 }
 
 .App-logo {

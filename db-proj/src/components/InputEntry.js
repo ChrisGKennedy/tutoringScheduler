@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import "./InputEntry.css";
 
 const InputEntry = () => {
   const [problem, setProblem] = useState("");
@@ -31,7 +32,7 @@ const InputEntry = () => {
   return (
     <Fragment>
       {""}
-      <h1 className="text-center mt-5"> CS Dept Queue </h1>
+      <h1 className="title"> CS Dept Queue </h1>
 
       <form className="d-flex mt-5" onSubmit={onSubmitForm}>
         <div class="input-group">

@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import "./SearchReservationWithRoomInput.css";
 
 function SearchReservationWithRoomInput() {
   const [theReservations, setSpecificReservations] = useState([]);
@@ -27,49 +28,52 @@ function SearchReservationWithRoomInput() {
 
   return (
     <Fragment>
-      <h1 className="text-center mt-5">
-        {" "}
-        Search for the Reservations by Room Name{" "}
-      </h1>
+      <div className="roomTable">
+        <h1 className="text-center mt-5">
+          {" "}
+          Search for the Reservations by Room Name{" "}
+        </h1>
 
-      <form className="d-flex mt-5" onSubmit={onSubmitForm}>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="">
-              Name of Room
-            </span>
+        <form className="d-flex mt-5" onSubmit={onSubmitForm}>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="">
+                Name of Room
+              </span>
+            </div>
+            <input
+              type="text"
+              className="form-control"
+              // value={}
+              onChange={(e) => setRoomid(e.target.value)}
+              placeholder="name"
+            />
+
+            <button className="btn btn-success"> search </button>
           </div>
-          <input
-            type="text"
-            className="form-control"
-            // value={}
-            onChange={(e) => setRoomid(e.target.value)}
-            placeholder="name"
-          />
+        </form>
 
-          <button className="btn btn-success"> search </button>
-        </div>
-      </form>
+        {/* TABLE */}
 
-      {/* TABLE */}
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">name</th>
-            <th scope="col">problem</th>
-            <th scope="col">Room Id</th>
-          </tr>
-        </thead>
-        <tbody>
-          {theReservations.map((res) => (
-            <tr key={res.reservation_id}>
-              <td>{res.studentname}</td>
-              <td>{res.problem}</td>
-              <td>{res.room_id}</td>
+        <table class="table table table-dark table-striped mt-5 text-center">
+          <thead>
+            <tr>
+              <th scope="col">name</th>
+              <th scope="col">problem</th>
+              <th scope="col">Room Id</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {theReservations.map((res) => (
+              <tr key={res.reservation_id}>
+                <td>{res.studentname}</td>
+                <td>{res.problem}</td>
+                <td>{res.room_id}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Fragment>
   );
 }

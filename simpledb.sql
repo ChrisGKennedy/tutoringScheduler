@@ -12,7 +12,7 @@ CREATE TABLE reservation(
     reservation_status INT DEFAULT 0, --Need to decide what each int means or use different data type
     --1: in waitlist, 2: in progress, 3: done
     problem VARCHAR(255) DEFAULT 'general problem', --May want it to be longer
-    studentName VARCHAR(255) DEFAULT 'Trinity Student'
+    studentName VARCHAR(255) DEFAULT 'Trinity Student' 
 );
 
 CREATE TABLE room(

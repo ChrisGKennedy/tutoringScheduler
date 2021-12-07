@@ -9,26 +9,30 @@ import InputTeacher from "./components/InputTeacher";
 import TeacherList from "./components/TeacherList";
 import UpdateScoreBoard from "./components/UpdateScoreBoard";
 import Divide from "./components/Divide";
-
 import SearchReservationWithRoomInput from "./components/SearchReservationWithRoomInput";
 import React, { Fragment } from "react";
 import EstimatedWait from "./components/EstimatedWait";
 
+import ParticleBackground from "./ParticleBackground";
+
 function App() {
   return (
-    <Fragment className="container">
-      <InputEntry />
-      <EstimatedWait />
-      <Waitlist />
-      <Divide />
-      <InputRoom />
-      <Room />
-      <SearchReservationWithRoomInput />
-
-      <InputTeacher />
-      <TeacherList />
-      <UpdateScoreBoard />
-      <Scoreboard />
+    <Fragment>
+      <div className="components">
+        <InputEntry />
+        <EstimatedWait />
+        <Waitlist />
+        <Divide />
+        <InputRoom />
+        <Room />
+        <Divide />
+        <SearchReservationWithRoomInput />
+        <Divide />
+        <InputTeacher />
+        <TeacherList />
+        <UpdateScoreBoard />
+        <Scoreboard />
+      </div>
     </Fragment>
   );
 }
