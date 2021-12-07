@@ -42,7 +42,7 @@ app.get("/simplereservationsearchname/:room_name", async (req, res) => {
     //console.log(req.body);
     const { room_name } = req.params;
     const someReservations = await pool.query(
-      "SELECT * FROM reservation r INNER JOIN teacher t ON t.room_id = r.room_id INNER JOIN scoreboard s ON s.teacher_id = t.teacher_id WHERE r.room_id = (SELECT room_id FROM room WHERE room_name = $1)",
+      "SELECT * FROM reservation r INNER JOIN teacher t ON t.room_id = r.room_id INNER JOIN scoreboard s ON s.teacher_id = t.teacher_id WHERE r.room_id = (SELECT room_id FROM room WHERE room_name = $1) AND r.reservation_status",
       [room_name]
     );
 
