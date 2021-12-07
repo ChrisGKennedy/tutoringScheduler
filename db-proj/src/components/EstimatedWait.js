@@ -32,11 +32,12 @@ function EstimatedWait() {
     //for result before reservation to compute before calculating wait time
 
     var time = 0;
-    for (let i = 0; i < reservations.length; i++) {
-      time +=
-        messageToMinutes(reservations[i].problem.toString()) *
-        reservations[i].score;
+    for (let i = 0; i < reservations.length; i++){
+      console.log(reservations[i].score/reservations.num_problems_done);
+      time += messageToMinutes((reservations[i].problem).toString()) * (reservations[i].score/reservations[i].num_problems_done)
+
     }
+    time = (time + .5 ).toFixed();
 
     setWaitTime("Estimated Wait Time: " + time.toString() + " minutes");
   };
