@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 //import "../styles/scoreboard.css";
+import "./Scoreboard.css";
 
 const Scoreboard = () => {
   const [scores, setScores] = useState([]);
@@ -21,25 +22,27 @@ const Scoreboard = () => {
 
   return (
     <Fragment>
-      <h2 className="text-center mt-5"> Scoreboard </h2>
-      <table class="table mt-5 text-center">
-        <thead>
-          <tr>
-            <th>Teacher Name</th>
-            <th>number of problems done</th>
-            <th>score</th>
-          </tr>
-        </thead>
-        <tbody>
-        {scores.map((res) => (
-            <tr key = {res.scoreboard_id}>
-              <td>{res.fullname}</td>
-              <td>{res.num_problems_done}</td>
-              <td>{res.score}</td>
+      <div className="scoreboard">
+        <h2 className="text-center mt-5"> Scoreboard </h2>
+        <table class="table table table-dark table-striped mt-5 text-center">
+          <thead>
+            <tr>
+              <th>Teacher Name</th>
+              <th>number of problems done</th>
+              <th>score</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {scores.map((res) => (
+              <tr key={res.scoreboard_id}>
+                <td>{res.fullname}</td>
+                <td>{res.num_problems_done}</td>
+                <td>{res.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Fragment>
   );
 };

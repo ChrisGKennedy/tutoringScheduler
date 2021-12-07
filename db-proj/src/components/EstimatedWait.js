@@ -5,7 +5,7 @@ function EstimatedWait() {
   const [roomName, setRoomName] = useState("");
   const [waitTime, setWaitTime] = useState("");
 
-  const getReservationsInFront = async () => {
+  async function getReservationsInFront() {
     try {
       const response = await fetch(
         `http://localhost:5000/simplereservationsearchname/${roomName}`
@@ -13,22 +13,23 @@ function EstimatedWait() {
       const jsonData = await response.json();
 
       setReservations2(jsonData);
+      console.log(reservations);
     } catch (err) {
       console.error(err.message);
     }
-  };
+  }
 
   const messageToMinutes = (msg) => {
     return (msg.length / 50 + 5).toFixed();
   };
 
-  var isPaused = false;
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
   const calculateWaitTime = async () => {
-    //doesn't work on first click. Is most likely not waiting for result before reservation
-    //to compute before calculating wait time
-
-    getReservationsInFront();
+    //doesn't work on first click. Is most likely not waiting
+    //for result before reservation to compute before calculating wait time
 
     var time = 0;
     for (let i = 0; i < reservations.length; i++) {
@@ -59,7 +60,7 @@ function EstimatedWait() {
           <button
             type="button"
             className="btn btn-success"
-            onClick={calculateWaitTime}
+            onClick={() => calculateWaitTime()}
           >
             Calculate
           </button>

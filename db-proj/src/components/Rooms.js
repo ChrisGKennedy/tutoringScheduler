@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import "./Rooms.css";
 
 import RoomsAndWaitlist from "./RoomsAndWaitlist";
 
@@ -51,32 +52,34 @@ const Rooms = () => {
 
   return (
     <Fragment>
-      <h2 className="text-center mt-5"> Rooms </h2>
-      <table class="table mt-5 text-center">
-        <thead>
-          <tr>
-            <th>Room ID (Testing)</th>
-            <th>Room Name</th>
+      <div className="rooms">
+        <h2 className="text-center mt-5"> Rooms </h2>
+        <table class="table table table-dark table-striped mt-5 text-center">
+          <thead>
+            <tr>
+              <th>Room ID (Testing)</th>
+              <th>Room Name</th>
 
-            <th>Delete Room</th>
-          </tr>
-        </thead>
-        {rooms.map((room) => (
-          <tr key={room.room_id}>
-            <td>{room.room_id}</td>
-            <td>{room.room_name}</td>
+              <th>Delete Room</th>
+            </tr>
+          </thead>
+          {rooms.map((room) => (
+            <tr key={room.room_id}>
+              <td>{room.room_id}</td>
+              <td>{room.room_name}</td>
 
-            <td>
-              <button
-                className="btn btn-danger"
-                onClick={() => deleteRooms(room.room_id)}
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </table>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteRooms(room.room_id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </table>
+      </div>
     </Fragment>
   );
 };

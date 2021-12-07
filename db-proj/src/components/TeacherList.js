@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import "./TeacherList.css";
 
 function TeacherList() {
   const [teachers, setTeachers] = useState([]);
@@ -35,39 +36,41 @@ function TeacherList() {
 
   return (
     <Fragment>
-      <h2 className="text-center mt-5"> Teacher List </h2>{" "}
-      <table class="table mt-5 text-center">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Problem</th>
-            <th>Room</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/*<tr>
+      <div className="teacherList">
+        <h2 className="text-center mt-5"> Teacher List </h2>{" "}
+        <table class="table table table-dark table-striped mt-5 text-center">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Problem</th>
+              <th>Room</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/*<tr>
         <td>John</td>
         <td>Doe</td>
         <td>john@example.com</td>
       </tr> */}
-          {teachers.map((teacher) => (
-            <tr key={teacher.teacher_id}>
-              <td>{teacher.fullname}</td>
-              <td>{teacher.email}</td>
-              <td>{teacher.room_id} </td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => deleteTeachers(teacher.teacher_id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            {teachers.map((teacher) => (
+              <tr key={teacher.teacher_id}>
+                <td>{teacher.fullname}</td>
+                <td>{teacher.email}</td>
+                <td>{teacher.room_id} </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteTeachers(teacher.teacher_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Fragment>
   );
 }

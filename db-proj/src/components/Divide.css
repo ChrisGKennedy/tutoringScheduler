@@ -1,4 +1,6 @@
 .bar {
-  background-color: purple;
-  color: purple;
+  background-color: #6e85b2;
+  color: #6e85b2;
+  margin: 6em;
+  border-radius: 10px;
 }
