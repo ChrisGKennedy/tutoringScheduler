@@ -39,13 +39,7 @@ function InputRoom() {
             onChange={(e) => setName(e.target.value)}
             placeholder="name"
           />
-          <input
-            type="text"
-            className="form-control"
-            value={room_id}
-            onChange={(e) => setId(e.target.value)}
-            placeholder="number"
-          />
+
           <button className="btn btn-success"> Add </button>
         </div>
       </form>

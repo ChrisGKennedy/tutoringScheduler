@@ -37,7 +37,7 @@ const InputEntry = () => {
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="">
-              Name and problem
+              Input a reservation
             </span>
           </div>
           <input

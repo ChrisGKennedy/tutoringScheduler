@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, { Fragment, useState } from "react";
 
 function EstimatedWait() {
   const [reservations, setReservations2] = useState([]);
@@ -7,7 +7,9 @@ function EstimatedWait() {
 
   const getReservationsInFront = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/simplereservationsearchname/${roomName}`);
+      const response = await fetch(
+        `http://localhost:5000/simplereservationsearchname/${roomName}`
+      );
       const jsonData = await response.json();
 
       setReservations2(jsonData);
@@ -17,26 +19,31 @@ function EstimatedWait() {
   };
 
   const messageToMinutes = (msg) => {
-    return (((msg.length) / 50) + 5).toFixed();
-  }
+    return (msg.length / 50 + 5).toFixed();
+  };
+
+  var isPaused = false;
 
   const calculateWaitTime = async () => {
-    //doesn't work on first click. Is most likely not waiting for result before reservation to compute before calculating wait time
+    //doesn't work on first click. Is most likely not waiting for result before reservation
+    //to compute before calculating wait time
+
     getReservationsInFront();
+
     var time = 0;
     for (let i = 0; i < reservations.length; i++){
       console.log(reservations[i].score/reservations.num_problems_done);
       time += messageToMinutes((reservations[i].problem).toString()) * (reservations[i].score/reservations[i].num_problems_done)
+
     }
     time = (time + .5 ).toFixed();
 
     setWaitTime("Estimated Wait Time: " + time.toString() + " minutes");
-
-  }
+  };
 
   return (
     <Fragment>
-        <form className="d-flex mt-5" onSubmit={calculateWaitTime}>
+      <form className="d-flex mt-5" onSubmit={calculateWaitTime}>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="">
@@ -50,9 +57,12 @@ function EstimatedWait() {
             onChange={(e) => setRoomName(e.target.value)}
             placeholder="room name"
           />
-          <button type="button" className="btn btn-success"
-          onClick={() => calculateWaitTime()}>
-            Calculate 
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={calculateWaitTime}
+          >
+            Calculate
           </button>
         </div>
       </form>
