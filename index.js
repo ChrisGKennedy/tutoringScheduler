@@ -54,7 +54,10 @@ app.get("/simplescores", async (req, res) => {
   //await = wait for a function to execute
   try {
     //console.log(req.body);
-    const allScores = await pool.query("SELECT * FROM scoreboard s INNER JOIN teacher t ON t.teacher_id = s.teacher_id");
+
+    const allScores = await pool.query(
+      "SELECT * FROM scoreboard s INNER JOIN teacher t ON t.teacher_id = s.teacher_id"
+    );
 
     res.json(allScores.rows);
   } catch (err) {
@@ -67,7 +70,9 @@ app.get("/simplescoresandteachers", async (req, res) => {
   //await = wait for a function to execute
   try {
     //console.log(req.body);
-    const allScores = await pool.query("SELECT * FROM scoreboard s INNER JOIN teacher t on s.teacher_id = t.teacher_id ORDER BY s.score ASC");
+    const allScores = await pool.query(
+      "SELECT * FROM scoreboard s INNER JOIN teacher t on s.teacher_id = t.teacher_id ORDER BY s.score ASC"
+    );
 
     res.json(allScores.rows);
   } catch (err) {
@@ -77,7 +82,6 @@ app.get("/simplescoresandteachers", async (req, res) => {
 
 //get score from a room ID
 
-
 //RESERVATIONS
 
 //WARNING: DELETES ALL IN RESERVATION
@@ -86,7 +90,8 @@ app.get("/simplescoresandteachers", async (req, res) => {
 app.delete("/simpledeleteall", async (req, res) => {
   try {
     const newReservation = await pool.query(
-      "DELETE FROM reservation WHERE reservation_status >= 2");
+      "DELETE FROM reservation WHERE reservation_status >= 2"
+    );
 
     res.json("deleted all reservations");
   } catch (err) {
@@ -104,13 +109,12 @@ app.get("/teacheridsearchroom_id/:room_id", async (req, res) => {
       "SELECT teacher_id FROM teacher where room_id = $1",
       [room_id]
     );
-    
+
     res.json(someReservations.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
-
 
 //Gets all reservations with a given room name and their score (for use in estimated wait)
 app.get("/simplereservationsearchname/:room_name", async (req, res) => {
@@ -122,7 +126,7 @@ app.get("/simplereservationsearchname/:room_name", async (req, res) => {
       "SELECT * FROM reservation r INNER JOIN teacher t ON t.room_id = r.room_id INNER JOIN scoreboard s ON s.teacher_id = t.teacher_id WHERE r.room_id = (SELECT room_id FROM room WHERE room_name = $1) AND r.reservation_status < 2",
       [room_name]
     );
-    
+
     res.json(someReservations.rows);
   } catch (err) {
     console.error(err.message);
@@ -237,6 +241,21 @@ app.get("/simplereservation", async (req, res) => {
   }
 });
 
+//Getting all reservations with an reservation status of 2
+app.get("/simplereservationscoreboard", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allReservations = await pool.query(
+      "SELECT * FROM reservation WHERE reservation_status = 2"
+    );
+
+    res.json(allReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Getting a specific reservation
 app.get("/simplereservation/:id", async (req, res) => {
   try {
@@ -289,9 +308,7 @@ app.delete("/simplereservation/:id", async (req, res) => {
 app.delete("/simplereservation/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteAllTodos = await pool.query(
-      "DELETE FROM reservation"
-    );
+    const deleteAllTodos = await pool.query("DELETE FROM reservation");
     res.json("All Todos deleted!");
   } catch (err) {
     console.log(err.message);
