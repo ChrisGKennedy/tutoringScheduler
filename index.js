@@ -13,7 +13,44 @@ app.use(express.json()); //req.body
 
 //ROUTES FOR SIMPLE DB----------------------------------------------------------------
 
+//SCOREBOARD
+
+//Getting all scores
+app.get("/simplescores", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const allScores = await pool.query("SELECT * FROM scoreboard s INNER JOIN teacher t on s.teacher_id = t.teacher_id");
+
+    res.json(allScores.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//get score from a room ID
+
+
 //RESERVATIONS
+
+//WARNING: DELETES ALL IN RESERVATION
+
+//Gets all reservations with a given room name and their score (for use in estimated wait)
+app.get("/simplereservationsearchname/:room_name", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { room_name } = req.params;
+    const someReservations = await pool.query(
+      "SELECT * FROM reservation r INNER JOIN teacher t ON t.room_id = r.room_id INNER JOIN scoreboard s ON s.teacher_id = t.teacher_id WHERE r.room_id = (SELECT room_id FROM room WHERE room_name = $1)",
+      [room_name]
+    );
+
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 //Creating a reservation with a room_id by giving a room name
 app.post("/simplereservationadvanced", async (req, res) => {
