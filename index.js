@@ -33,6 +33,8 @@ app.get("/simplescores", async (req, res) => {
 
 //RESERVATIONS
 
+//WARNING: DELETES ALL IN RESERVATION
+
 //Gets all reservations with a given room name and their score (for use in estimated wait)
 app.get("/simplereservationsearchname/:room_name", async (req, res) => {
   //await = wait for a function to execute
