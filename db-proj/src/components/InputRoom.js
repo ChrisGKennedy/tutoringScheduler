@@ -29,7 +29,7 @@ function InputRoom() {
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="">
-              Room Name and Number
+              Room Name
             </span>
           </div>
           <input

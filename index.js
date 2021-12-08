@@ -116,6 +116,23 @@ app.get("/teacheridsearchroom_id/:room_id", async (req, res) => {
   }
 });
 
+//Getting the room names with the room id
+app.get("/roomnames/:room_id", async (req, res) => {
+  //await = wait for a function to execute
+  try {
+    //console.log(req.body);
+    const { room_id } = req.params;
+    const someReservations = await pool.query(
+      "SELECT room_name FROM room WHERE room_id = (SELECT room_id FROM teaacher WHERE room_name = $1)",
+      [room_id]
+    );
+
+    res.json(someReservations.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Gets all reservations with a given room name and their score (for use in estimated wait)
 app.get("/simplereservationsearchname/:room_name", async (req, res) => {
   //await = wait for a function to execute
@@ -233,7 +250,9 @@ app.get("/simplereservation", async (req, res) => {
   //await = wait for a function to execute
   try {
     //console.log(req.body);
-    const allReservations = await pool.query("SELECT * FROM reservation");
+    const allReservations = await pool.query(
+      "SELECT * FROM reservation res INNER JOIN room r ON res.room_id = r.room_id"
+    );
 
     res.json(allReservations.rows);
   } catch (err) {
@@ -284,6 +303,27 @@ app.put("/simplereservation/:id", async (req, res) => {
     );
 
     res.json("reservation was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+const updateteacher =
+  "UPDATE teacher SET fullname = $3, email = $4, room_id = $1 WHERE teacher_id = $2";
+//Updating a teacher
+app.put("/simpleteacherupdate/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { room_id } = req.body;
+    const { email } = req.body;
+    const { fullname } = req.body;
+
+    const updateTeacher = await pool.query(
+      "UPDATE teacher SET fullname = $3, email = $4, room_id = $1 WHERE teacher_id = $2",
+      [room_id, id, fullname, email]
+    );
+
+    res.json("teacher was updated!");
   } catch (err) {
     console.error(err.message);
   }
@@ -465,7 +505,7 @@ app.delete("/simpleteacher/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteRoom = await pool.query(
-      "DELETE FROM teacher WHERE teacher_id = $1",
+      "DELETE FROM teacher WHERE teacher_id = $1 ",
       [id]
     );
     res.json("teacher was deleted!");

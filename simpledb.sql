@@ -5,6 +5,12 @@ CREATE DATABASE simplescheduler;
 --the lines below. Otherwise you will create a database and create
 --the below tables in your current (not scheduler) database.
 
+CREATE TABLE room(
+    room_id SERIAL PRIMARY KEY,
+    room_name VARCHAR (255) DEFAULT 'Office Hours',
+    room_number INT DEFAULT 0
+);
+
 CREATE TABLE reservation(
     reservation_id SERIAL PRIMARY KEY,
     room_id int, 
@@ -15,27 +21,20 @@ CREATE TABLE reservation(
     studentName VARCHAR(255) DEFAULT 'Trinity Student' 
 );
 
-CREATE TABLE room(
-    room_id SERIAL PRIMARY KEY,
-    room_name VARCHAR (255) DEFAULT 'Office Hours',
-    room_number INT DEFAULT 0
-    --should probably add room building
-);
-
 CREATE TABLE teacher(
     teacher_id SERIAL PRIMARY KEY,
-    room_id int,
+    room_id int UNIQUE,
     FOREIGN KEY (room_id) REFERENCES room(room_id),
     fullname VARCHAR(255) DEFAULT 'Trinity Instructor',
     email VARCHAR(255) DEFAULT 'instructor@trinity.edu'
 );
 
 CREATE TABLE scoreboard(
-    scoreboard_id SERIAL PRIMARY KEY,
-    teacher_id int,
+    teacher_id int PRIMARY KEY 
+    REFERENCES teacher(teacher_id) 
+    ON DELETE CASCADE,
     num_problems_done int,
-    score float,
-    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
+    score float
 );
 -- display id, number problems, name, score
 

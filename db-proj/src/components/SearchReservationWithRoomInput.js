@@ -58,9 +58,10 @@ function SearchReservationWithRoomInput() {
         <table class="table table table-dark table-striped mt-5 text-center">
           <thead>
             <tr>
-              <th scope="col">name</th>
-              <th scope="col">problem</th>
-              <th scope="col">Room Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Problem</th>
+              <th scope="col">Room ID</th>
+              <th scope="col">Reservation Status</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +70,7 @@ function SearchReservationWithRoomInput() {
                 <td>{res.studentname}</td>
                 <td>{res.problem}</td>
                 <td>{res.room_id}</td>
+                <td>{res.reservation_status}</td>
               </tr>
             ))}
           </tbody>
