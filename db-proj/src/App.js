@@ -30,6 +30,7 @@ function App() {
         <Divide />
         <InputTeacher />
         <TeacherList />
+        <Divide />
         <UpdateScoreBoard />
         <Scoreboard />
       </div>

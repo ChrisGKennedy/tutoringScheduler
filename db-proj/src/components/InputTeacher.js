@@ -30,7 +30,7 @@ function InputTeacher() {
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="">
-              Name and email
+              Name and Email
             </span>
           </div>
           <input

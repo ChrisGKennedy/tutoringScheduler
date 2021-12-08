@@ -37,14 +37,14 @@ function Waitlist() {
   return (
     <Fragment>
       <div className="waitlist">
-        <h2 className="text-center mt-5"> Waiting List </h2>{" "}
+        <h2 className="text-center mt-5"> Master Waiting List </h2>{" "}
         <table class="table table-dark table-striped mt-5 text-center">
           <thead>
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Problem</th>
-              <th scope="col">room id (testing)</th>
-              <th scope="col">status</th>
+              <th scope="col">Room Name</th>
+              <th scope="col">Status</th>
               <th scope="col">Edit</th>
               <th scope="col">Delete</th>
             </tr>
@@ -59,7 +59,7 @@ function Waitlist() {
               <tr key={res.reservation_id}>
                 <td>{res.studentname}</td>
                 <td className="problem">{res.problem}</td>
-                <td>{res.room_id}</td>
+                <td>{res.room_name}</td>
                 <td>{res.reservation_status}</td>
                 <td>
                   <EditEntry reservation={res} />
